@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = "my precious" 
 app.database = "sample.db"
 
-#login recquired decorator
+# login required decorator
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -21,15 +21,22 @@ def login_required(f):
             return redirect(url_for('login'))
     return wrap
 
-#use decorators to link functions to a URL
+# use decorators to link the function to a url
 @app.route('/')
 @login_required
 def home():
-		g.db = connect_db()
-		cur = g.db.execute('select * from posts')
-		posts = [dict(title=row[0], description=row[1]) for row in cur.fetchall()]
-		g.db.close()
-		return render_template('index.html', posts=posts)
+    # return "Hello, World!"  # return a string
+    g.db = connect_db()
+    cur = g.db.execute('select * from posts')
+
+    posts = []
+    for row in cur.fetchall():
+        posts.append(dict(title=row[0], description=row[1]))
+
+    # posts = [dict(title=row[0], description=row[1]) for row in cur.fetchall()]
+
+    g.db.close()
+    return render_template('index.html', posts=posts)  # render a template
 
 @app.route('/welcome')
 def welcome():
