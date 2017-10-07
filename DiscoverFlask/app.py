@@ -5,7 +5,7 @@ import sqlite3
 
 #create the application object
 app = Flask(__name__)
-
+ 
 #would ideally be created by a random number generator
 app.secret_key = "my precious" 
 app.database = "sample.db"
